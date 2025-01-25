@@ -66,7 +66,7 @@ def main():
     os.makedirs(opt.proj_path, exist_ok=True)
     os.makedirs(opt.proj_path+'/model', exist_ok=True)
     os.makedirs(opt.proj_path+'/plot', exist_ok=True)
-
+    os.makedirs(opt.proj_path+'/samples', exist_ok=True)
     target = get_target(opt)
 
     lvm, score_model = get_network(opt)
@@ -112,6 +112,7 @@ def main():
                 # save ckpt
                 torch.save(lvm.state_dict(), opt.proj_path + '/model/' + 'LVM.pt')
                 torch.save(score_model.state_dict(), opt.proj_path + '/model/' + 'SCORE.pt')
+                torch.save(x_samples, opt.proj_path + '/samples/%d.pt'%it)
                 if opt.early_stop:
                     print('Iter %d, '%it, 'Metric %.6f'%metric, flush=True)
             if args.track_tvd:

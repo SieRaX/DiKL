@@ -56,3 +56,7 @@ If you find our paper, code, and/or data useful for your research, please cite o
   year={2024}
 }
 ```
+
+## Target PDF 추가 및 변경 방법
+train_utils.py 파일 내 get_target 함수를 통해 원하는 타켓을 추가하고 변경할 수 있습니다.
+

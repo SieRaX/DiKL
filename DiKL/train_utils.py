@@ -13,7 +13,7 @@ def get_target(opt):
     Return target objective.
     """
     if opt.name == 'mog':
-        target = GMM(dim=2, n_mixes=40,loc_scaling=40, log_var_scaling=1, device=opt.device)
+        target = GMM_GRID(dim=2, n_mixes=9, log_var_scaling=0.3, device=opt.device)
         target.to(opt.device)
     elif opt.name == 'dw':
         class Target(MultiDoubleWellEnergy):
@@ -126,7 +126,7 @@ def get_sample(lvm, opt, stop_grad, sample_size=None):
 def save_plot_and_check(opt, x_samples, posterior_samples, target, plot_file_name):
     if opt.name == 'mog':
         plot_MoG40(
-            log_prob_function=GMM(dim=2, n_mixes=40, loc_scaling=40, log_var_scaling=1, device="cpu").log_prob,
+            log_prob_function=GMM_GRID(dim=2, n_mixes=9, log_var_scaling=0.3, device="cpu").log_prob,
             samples=x_samples, 
             file_name=plot_file_name,
             title=None
