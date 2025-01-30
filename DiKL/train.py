@@ -44,6 +44,8 @@ def main():
         cfg = 'configs/dw.yaml'
     elif args.target == 'lj':
         cfg = 'configs/lj.yaml'
+    elif args.target == 'funnel':
+        cfg = 'configs/funnel.yaml'
     else:
         raise NotImplementedError
     with open(cfg, 'r') as file:
@@ -86,6 +88,7 @@ def main():
             x = get_sample(lvm, opt, stop_grad=True)
             # dsm loss
             score_loss = dsm_loss(score_model, x, opt)
+            # print(f"score_loss: {score_loss}")
             score_loss.backward()
             score_optim.step()
             Score_loss.append(score_loss.item())
@@ -97,6 +100,9 @@ def main():
         x = get_sample(lvm, opt, stop_grad=False)
 
         lvm_loss, posterior_samples = diKL_loss(score_model, x, process, opt, target)
+        # print(f"lvm_loss: {lvm_loss}")
+        # print(f"torch.isinf(lvm_loss): {torch.isinf(lvm_loss)}")
+        # input()
         if ~(torch.isnan(lvm_loss) | torch.isinf(lvm_loss)):
             lvm_loss.backward()
 

@@ -61,6 +61,9 @@ def diKL_loss(score_model, x, process, opt, target):
         GRADs = []
         for lg_it in range(opt.num_langevin_steps):
             x_0, acc, gradx0 = langevin_dynamics.sample()
+            # print(f"GRADs: {gradx0.min()} | {gradx0.max()}")
+            # print(f"x_0: {x_0.min()} | {x_0.max()}")
+            # print(f"x_0_init: {x_0_init.min()} | {x_0_init.max()}")
             Acc.append(acc)
 
             x_0 = process(x_0).detach().clone()
@@ -102,4 +105,24 @@ def diKL_loss(score_model, x, process, opt, target):
     
     score_diff = w*(lvm_score - target_score).detach()
     lvm_loss=(score_diff*x_t).sum(1).mean()
+
+    # print(f"lvm_score: {lvm_score.min()} | {lvm_score.max()}")
+    # print(f"target_score: {target_score.min()} | {target_score.max()}")
+    # print(f"a: {a}")
+    # print(f"before w: {(lvm_score - target_score).detach()} |  shape: {(lvm_score - target_score).detach().shape}")
+    # print(f"before w max: {(lvm_score - target_score).detach().sum(1).max()}")
+    # print(f"before w min: {(lvm_score - target_score).detach().sum(1).min()}")
+    # diff_sum = (lvm_score - target_score).detach().sum(1)
+    # num_small = (diff_sum < -100).sum().item()
+    # num_big = (diff_sum > 100).sum().item()
+    # print(f"Number of values < -50: {num_small}")
+    # print(f"Number of values > 50: {num_big}")
+    # from matplotlib import pyplot as plt
+    # plt.hist((lvm_score - target_score).detach().sum(1).cpu().numpy(), bins=100)
+    # plt.savefig("loss.png")
+    # print(f"after w: {score_diff} |  shape: {score_diff.shape}")
+    # print(f"after w max: {score_diff.argmax()}")
+    # print(f"x_t: {x_t} |  shape: {x_t.shape}")
+    # print(f"lvm_loss: {lvm_loss}")
+    # input()
     return lvm_loss, X0s[-1]

@@ -101,9 +101,12 @@ class GMM_GRID(torch.nn.Module):
 
     def log_prob(self, x: torch.Tensor, **kwargs):
         log_prob = self.distribution.log_prob(x)
+        print(f"log_prob has nan: {torch.isnan(log_prob).any()}")
         mask = torch.zeros_like(log_prob)
         mask[log_prob < -1e4] = - torch.tensor(float("inf"))
+        print(f"mask: {mask.min()} | {mask.max()}")
         log_prob = log_prob + mask
+        print(f"log_prob: {log_prob.min()} | {log_prob.max()}")
         return log_prob
 
     def sample(self, shape=(1,)):

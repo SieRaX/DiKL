@@ -38,6 +38,7 @@ def diffusion_sampler(target_log_p: callable,
     if mean_center is not None:
         x_importance_sample = mean_center(x_importance_sample)
 
+    print(f"x_importance_sample.shape: {x_importance_sample.shape}")
     is_weights = -energy(x_importance_sample) \
                     + Normal(x_importance_sample*bar_alpha_t.sqrt(), (1-bar_alpha_t)**0.5).log_prob(x_t).sum(-1) \
                     - Normal(x_0_init_repeat/bar_alpha_t.sqrt(), (1-bar_alpha_t)**0.5 / bar_alpha_t**0.5).log_prob(x_importance_sample).sum(-1)

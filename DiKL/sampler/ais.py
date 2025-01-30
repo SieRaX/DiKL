@@ -204,6 +204,7 @@ class DenoisingLangevinDynamics(object):
             self.f_x2 = f_xc2.detach()
             self.grad_x1 = grad_xc1.detach()
             self.grad_x2 = grad_xc2.detach()
+            # input(f"self.grad_x1: {self.grad_x1.min()} | {self.grad_x1.max()}")
 
     def sample(self) -> tuple:
 
@@ -245,6 +246,8 @@ class DenoisingLangevinDynamics(object):
 
             acc_rate = torch.minimum(torch.ones_like(log_accept_rate), log_accept_rate.exp()).mean()
             
+            # print(f"DenoisingLangevinDynamics: {self.grad_x1.min()} | {self.grad_x1.max()}")
+            # input()
             return copy.deepcopy(self.x.detach()), acc_rate.item(), copy.deepcopy(self.grad_x1.detach())
 
 

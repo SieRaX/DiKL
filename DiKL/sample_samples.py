@@ -3,7 +3,7 @@ import torch.optim as optim
 from torch.distributions import Normal, Gumbel
 import numpy as np
 import random
-
+import time
 import os
 import yaml
 import argparse
@@ -70,7 +70,11 @@ def main():
     lvm, score_model = get_network(opt)
     
     lvm.load_state_dict(torch.load(opt.proj_path + '/model/' + 'LVM.pt'))
+    start_time = time.time()
     x_samples = get_sample(lvm, opt, True, 100000)
+    end_time = time.time()
+    print(f"Time taken: {end_time - start_time} seconds")
+    print(f"{ opt.proj_path + '/samples/DiKL_samples_4.pt'}")
     torch.save(x_samples, opt.proj_path + '/samples/DiKL_samples_4.pt')
 
     

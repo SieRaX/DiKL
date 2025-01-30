@@ -1,0 +1,49 @@
+# target
+name: 'funnel'
+e3: False
+n_dim: 10
+
+# model
+h_dim: 400
+layer_num: 5 
+score_h_dim: 400 
+score_layer_num: 3
+
+# diffusive
+Tmin: 1
+Tmax: 30
+start: 0.0001
+end: 0.5
+dsm_scheme: 'linear'
+
+# train
+max_iter: 100000
+check_iter: 100
+lvm_lr: 0.001
+score_lr: 0.0001
+batch_size: 1024
+grad_norm_clip: 10.0
+grad_estimator: 'msm'
+weight: 'uniform'
+score_iter: 50
+early_stop: false
+
+# posterior sampling
+boundary: 1000.0
+num_langevin_steps: 5
+langevin_step_size: 0.01
+dynamic_step_size: false
+sample_size: 1
+n_is: 10
+ais: 
+    AIS_step: 15 # 1 means IS
+    ais_step_size: 1.0
+    lg_step: null
+    hmc_step: 1
+    lg: False
+
+#save and check
+save_path: './save/'
+val_sample_path: '' # only for visualization
+verbose: false
+eval_samples: 100000

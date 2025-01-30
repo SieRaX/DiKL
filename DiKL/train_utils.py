@@ -2,7 +2,7 @@ from energy.mog40 import *
 from energy.dw import *
 from energy.lj import *
 from energy.mw import *
-
+from energy.funnel import *
 from models.mlp import *
 from models.egnn import *
 
@@ -15,6 +15,8 @@ def get_target(opt):
     if opt.name == 'mog':
         target = GMM_GRID(dim=2, n_mixes=9, log_var_scaling=0.3, device=opt.device)
         target.to(opt.device)
+    elif opt.name == 'funnel':
+        target = Funnel()
     elif opt.name == 'dw':
         class Target(MultiDoubleWellEnergy):
             def log_prob(self, x, **kwargs):
@@ -61,7 +63,7 @@ def get_network(opt):
     """
     Return score network and neural sampler
     """
-    if opt.name in ['mog', 'mw']:
+    if opt.name in ['mog', 'mw', 'funnel']:
         lvm = LVM(opt.n_dim, opt.h_dim, opt.n_dim, opt.layer_num, opt.device).to(opt.device)
         score_model= DiffusionModel(
                                     x_dim=opt.n_dim,
